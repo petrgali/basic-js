@@ -17,7 +17,16 @@ const HALF_LIFE_PERIOD = 5730;
  * dateSample('WOOT!') => false
  *
  */
-export default function dateSample(/* sampleActivity */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+const validator = [
+    (sample) => { return typeof sample === 'string' },
+    (sample) => { return !isNaN(parseInt(sample)) },
+    (sample) => { return parseFloat(sample) <= MODERN_ACTIVITY },
+    (sample) => { return parseFloat(sample) > 0 }
+]
+export default function dateSample(sampleActivity) {
+    const ln = 0.693
+    for (let isValid of validator) {
+        if (!isValid(sampleActivity)) return false
+    }
+    return Math.ceil(Math.log(MODERN_ACTIVITY / parseFloat(sampleActivity)) / (ln / HALF_LIFE_PERIOD))
 }
