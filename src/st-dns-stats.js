@@ -22,6 +22,15 @@ import { NotImplementedError } from '../extensions/index.js';
  * }
  *
  */
-export default function getDNSStats(/* domains */) {
-  
+export default function getDNSStats(domains) {
+    const result = {}
+    domains.forEach(domain => {
+        const dom = domain.split('.').reverse()
+        let sub = ''
+        dom.forEach(name => {
+            sub += `.${name}`
+            result[sub] === undefined ? result[sub] = 1 : result[sub] += 1
+        })
+    })
+    return result
 }
